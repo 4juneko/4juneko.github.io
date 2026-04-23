@@ -11,7 +11,7 @@
 
   nav { position: sticky; top: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-bottom: 0.5px solid #e5e5e5; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 56px; z-index: 100; }
   nav .logo { font-size: 15px; font-weight: 500; letter-spacing: -0.3px; }
-  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul { list-style: none; display: flex; gap: 1.5rem; }
   nav ul li a { font-size: 13px; color: #666; transition: color 0.2s; cursor: pointer; }
   nav ul li a:hover { color: #111; }
 
@@ -90,6 +90,10 @@
 <nav>
   <div class="logo">고주은</div>
   <ul>
+    <li><a onclick="document.getElementById('career').scrollIntoView({behavior:'smooth'})">경력</a></li>
+    <li><a onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">논문·특허</a></li>
+    <li><a onclick="document.getElementById('ai-projects').scrollIntoView({behavior:'smooth'})">AI 프로젝트</a></li>
+    <li><a onclick="document.getElementById('skills').scrollIntoView({behavior:'smooth'})">역량</a></li>
     <li><a onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">연락처</a></li>
   </ul>
 </nav>
@@ -345,8 +349,8 @@
 
 <hr class="divider">
 
-<!-- 프로젝트 -->
-<section>
+<!-- AI 프로젝트 -->
+<section id="ai-projects">
   <h2 class="section-title">AI 프로젝트</h2>
   <div class="projects-grid">
 
@@ -391,7 +395,7 @@
 <hr class="divider">
 
 <!-- 역량 -->
-<section>
+<section id="skills">
   <h2 class="section-title">역량</h2>
   <div class="skills-wrap">
     <div class="skills-row">
