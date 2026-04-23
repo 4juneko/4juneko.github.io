@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #fff; color: #111; line-height: 1.7; }
+  a { color: inherit; text-decoration: none; }
+
+  nav { position: sticky; top: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-bottom: 0.5px solid #e5e5e5; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 56px; z-index: 100; }
+  nav .logo { font-size: 15px; font-weight: 500; letter-spacing: -0.3px; }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul li a { font-size: 13px; color: #666; transition: color 0.2s; cursor: pointer; }
+  nav ul li a:hover { color: #111; }
+
+  section { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+  section + section { padding-top: 3rem; }
+
+  .hero { padding-top: 6rem; padding-bottom: 4rem; }
+  .hero .eyebrow { font-size: 12px; letter-spacing: 0.08em; color: #888; text-transform: uppercase; margin-bottom: 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1.25rem; }
+  .hero h1 span { color: #888; }
+  .hero p { font-size: 16px; color: #555; max-width: 520px; margin-bottom: 2rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-size: 12px; padding: 4px 12px; border: 0.5px solid #ddd; border-radius: 100px; color: #555; background: #f8f8f8; }
+
+  h2.section-title { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin-bottom: 2.5rem; }
+
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-item { display: grid; grid-template-columns: 140px 1fr; gap: 1.5rem; padding-bottom: 2.5rem; position: relative; }
+  .tl-item:not(:last-child)::before { content: ''; position: absolute; left: 139px; top: 8px; bottom: 0; width: 0.5px; background: #e5e5e5; }
+  .tl-item::after { content: ''; position: absolute; left: 134px; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 1.5px solid #bbb; }
+  .tl-left { text-align: right; padding-right: 1.5rem; }
+  .tl-period { font-size: 12px; color: #aaa; white-space: nowrap; }
+  .tl-duration { font-size: 11px; color: #ccc; margin-top: 2px; }
+  .tl-right h3 { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+  .tl-right .org { font-size: 13px; color: #888; margin-bottom: 8px; }
+  .tl-right p { font-size: 13px; color: #666; }
+  .tl-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .badge { font-size: 11px; padding: 3px 9px; border-radius: 4px; background: #f4f4f4; color: #666; }
+  .badge.blue { background: #eef3fd; color: #3a5fa5; }
+  .badge.green { background: #eef8f1; color: #2e7d45; }
+  .badge.amber { background: #fdf6e3; color: #8a6a10; }
+  .badge.registered { background: #eef8f1; color: #2e7d45; }
+  .badge.expired { background: #f5f5f5; color: #999; }
+
+  .projects-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+  .proj-card { border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 1.25rem 1.5rem; }
+  .proj-card:hover { border-color: #ccc; }
+  .proj-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .proj-title { font-size: 14px; font-weight: 500; }
+  .proj-type { font-size: 11px; color: #aaa; background: #f8f8f8; border: 0.5px solid #eee; padding: 2px 8px; border-radius: 100px; white-space: nowrap; margin-left: 8px; }
+  .proj-desc { font-size: 13px; color: #666; margin-bottom: 10px; }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .skills-wrap { display: flex; flex-direction: column; gap: 2rem; }
+  .skills-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .skills-row.two { grid-template-columns: repeat(2, 1fr); }
+  .skill-group h3 { font-size: 12px; font-weight: 500; color: #888; margin-bottom: 12px; letter-spacing: 0.04em; }
+  .skill-list { display: flex; flex-direction: column; gap: 6px; }
+  .skill-item { font-size: 13px; color: #444; }
+
+  .contact-block { border-top: 0.5px solid #e5e5e5; padding-top: 3rem; padding-bottom: 5rem; }
+  .contact-block p { font-size: 15px; color: #555; margin-bottom: 1.5rem; }
+  .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .contact-link { font-size: 13px; padding: 8px 20px; border: 0.5px solid #ddd; border-radius: 8px; color: #444; transition: all 0.2s; }
+  .contact-link:hover { border-color: #aaa; background: #f8f8f8; }
+
+  hr.divider { border: none; border-top: 0.5px solid #eee; max-width: 720px; margin: 0 auto; }
+
+  @media (max-width: 600px) {
+    .tl-item { grid-template-columns: 90px 1fr; }
+    .tl-item::before { left: 89px; }
+    .tl-item::after { left: 84px; }
+    .skills-row { grid-template-columns: 1fr 1fr; }
+    .skills-row.two { grid-template-columns: 1fr 1fr; }
+    nav ul { gap: 1rem; }
+    section { padding: 3rem 1.25rem; }
+  }
+  @media (max-width: 400px) {
+    .skills-row, .skills-row.two { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">고주은</div>
+  <ul>
+    <li><a onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">연락처</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="about">
+  <div class="eyebrow">Research · AI · IP Strategy · 2026년 4월 업데이트</div>
+  <h1>R&D·AI·IP를<br><span>잇는</span> 연구자</h1>
+  <p>LG화학 연구원부터 AI 스타트업, 한국항공우주연구원 지식재산권 업무까지 — 기술을 발굴하고, 이해하고, 가치로 연결하는 일을 해왔습니다.</p>
+  <div class="tags">
+    <span class="tag">화학 연구 · 특허 13건</span>
+    <span class="tag">AI · NLP 논문</span>
+    <span class="tag">IP 전략 · 지식재산권 관리</span>
+    <span class="tag">특허 데이터 분석</span>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="career">
+  <h2 class="section-title">경력</h2>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-period">2024.9 — 현재</div>
+        <div class="tl-duration">약 1년 8개월</div>
+      </div>
+      <div class="tl-right">
+        <h3>지식재산권 담당</h3>
+        <div class="org">한국항공우주연구원 · 기술사업화실</div>
+        <p>국가 R&D 성과물의 특허 출원·관리 등 지식재산권 업무 담당.<br>특허 기술분류코드(IPC) 기반 융합 트렌드 분석 연구 수행 및 한국항공우주학회 논문 발표.</p>
+        <div class="tl-badges">
+          <span class="badge amber">기술분류코드 분석</span>
+          <span class="badge amber">지식재산권 관리</span>
+          <span class="badge amber">논문 발표</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-period">2019 — 2024.2</div>
+        <div class="tl-duration">약 5년</div>
+      </div>
+      <div class="tl-right">
+        <h3>AI 연구원</h3>
+        <div class="org">IT 스타트업</div>
+        <p>AI 학습을 위한 데이터 구축 수행.<br>이후 음성 처리 및 자연어 분류(NLP) 모델 연구·개발로 확장.<br>관련 논문 게재.</p>
+        <div class="tl-badges">
+          <span class="badge blue">데이터 구축</span>
+          <span class="badge blue">음성 AI</span>
+          <span class="badge blue">NLP · 자연어 분류</span>
+          <span class="badge blue">논문 게재</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-period">2015 — 2022</div>
+        <div class="tl-duration">약 7년</div>
+      </div>
+      <div class="tl-right">
+        <h3>코딩 강사</h3>
+        <div class="org">과학관 · 프리랜서</div>
+        <p>과학관에서 코딩 교육 프리랜서 강사로 활동.<br>기술을 대중에게 쉽게 전달하는 커뮤니케이션 역량 강화.</p>
+        <div class="tl-badges">
+          <span class="badge blue">코딩 교육</span>
+          <span class="badge blue">기술 커뮤니케이션</span>
+          <span class="badge blue">프리랜서</span>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-period">2001 — 2008</div>
+        <div class="tl-duration">8년</div>
+      </div>
+      <div class="tl-right">
+        <h3>소재 분야 연구원</h3>
+        <div class="org">LG화학 · 기술연구원</div>
+        <p>회로기판 소재 등 소재·화학 분야 기초 및 응용 연구 수행.<br>연구 성과물 특허 출원 13건 등록.<br>국내출원 우선권을 기반으로 PCT 출원 수행.</p>
+        <div class="tl-badges">
+          <span class="badge green">특허 13건</span>
+          <span class="badge green">PCT 출원</span>
+          <span class="badge green">화학 소재 연구</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-period">2001</div>
+      </div>
+      <div class="tl-right">
+        <h3>화학과 석사 졸업</h3>
+        <div class="org">서강대학교 대학원</div>
+        <p>고분자 합성 및 비선형 광학 전공.<br>SCI 논문 1편 및 한국고분자학회 학술대회 2편 발표.</p>
+        <div class="tl-badges">
+          <span class="badge green">고분자 합성</span>
+          <span class="badge green">비선형 광학</span>
+          <span class="badge green">SCI 논문</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-period">1999</div>
+      </div>
+      <div class="tl-right">
+        <h3>화학과 학사 졸업</h3>
+        <div class="org">서강대학교</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="projects">
+  <h2 class="section-title">논문 · 특허</h2>
+  <div class="projects-grid">
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <div class="proj-title">인공위성 분야 기술 동향 및 기술 융합 트렌드 분석 : 항우연 특허를 중심으로</div>
+        <span class="proj-type">학술대회 · 2026</span>
+      </div>
+      <p class="proj-desc">고주은, 박정호. 한국항공우주연구원 보유 특허를 기반으로 인공위성 분야의 기술 동향과 기술 간 융합 트렌드를 분석한 연구. 한국항공우주학회 2026년도 춘계학술대회 발표.</p>
+      <div class="proj-tags">
+        <span class="badge amber">인공위성</span>
+        <span class="badge amber">기술 동향 분석</span>
+        <span class="badge amber">특허 융합 트렌드</span>
+        <span class="badge amber">한국항공우주학회</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <div class="proj-title">아동 음성 인식 향상을 위한 인공지능 모델 개선</div>
+        <span class="proj-type">논문 · 2024</span>
+      </div>
+      <p class="proj-desc">손계원, 소준섭, 고주은, 이진우, 이정록, & 신원선. 아동 음성 인식 향상을 위한 인공지능 모델 개선. 디지털콘텐츠학회논문지, 25(2), 547-555.</p>
+      <div class="proj-tags">
+        <span class="badge blue">아동 음성 인식</span>
+        <span class="badge blue">AI 모델</span>
+        <span class="badge blue">디지털콘텐츠학회</span>
+        <span style="font-size:11px; font-weight:500; background:#eef8f1; color:#2e7d45; border:0.5px solid #b6dfc4; border-radius:4px; padding:3px 9px;">KCI</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <div class="proj-title">PCIT 참여 부모의 상호작용 기술 증진을 위한 인공지능 기반 자동 피드백 시스템 예비연구</div>
+        <span class="proj-type">논문 · 2023</span>
+      </div>
+      <p class="proj-desc">선우현, 최광현, 고주은, 신원선, & 박수연. PCIT에 참여하는 부모의 상호작용 기술 증진을 위한 인공지능 기반 자동 피드백 시스템 예비연구. 영유아아동정신건강연구, 69-88.</p>
+      <div class="proj-tags">
+        <span class="badge blue">AI · 음성분석</span>
+        <span class="badge blue">자동 피드백</span>
+        <span class="badge blue">PCIT</span>
+        <span style="font-size:11px; font-weight:500; background:#eef8f1; color:#2e7d45; border:0.5px solid #b6dfc4; border-radius:4px; padding:3px 9px;">KCI</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <div class="proj-title">Spontaneous ordering of nonlinear optical groups in a polymer thin film through cross-linking</div>
+        <span class="proj-type">논문 · 2000</span>
+      </div>
+      <p class="proj-desc">Jung, C., Lee, C. H., Ko, J. E., Lee, H., Kim, D., & Rhee, B. K. Spontaneous ordering of nonlinear optical groups in a polymer thin film through cross-linking. Molecular Crystals and Liquid Crystals Science and Technology. Section A, 349(1), 23-26.</p>
+      <div class="proj-tags">
+        <span class="badge green">비선형 광학</span>
+        <span class="badge green">폴리머 박막</span>
+        <span class="badge green">가교 반응</span>
+        <span style="font-size:11px; font-weight:500; background:#eef8f1; color:#2e7d45; border:0.5px solid #b6dfc4; border-radius:4px; padding:3px 9px;">SCI</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <div class="proj-title">Epoxy 기반 폴리머 박막의 NLO 발색단 자발 배향</div>
+        <span class="proj-type">학술대회 · 2000</span>
+      </div>
+      <p class="proj-desc">고주은, 정창수, 김도석, 이범구, & 이후성. Spontaneous Ordering of Nonlinear Optical Chromophores in Thin Film of Epoxy-based Polymer upon Heat-treatment. 한국고분자학회 학술대회 연구논문 초록집, 287-287.</p>
+      <div class="proj-tags">
+        <span class="badge green">NLO 발색단</span>
+        <span class="badge green">열처리</span>
+        <span class="badge green">한국고분자학회</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <div class="proj-title">Poly(anthranilic acid-DR1) 박막의 NLO 발색단 배향</div>
+        <span class="proj-type">학술대회 · 2000</span>
+      </div>
+      <p class="proj-desc">고주은, 이창호, 정창수, 김도석, 이범구, & 이후성. Spontaneous Ordering of Nonlinear Optical Chromophores in the Thin Film of Poly(anthranilic acid-DR1) upon Heat-treatment. 한국고분자학회 학술대회 연구논문 초록집, 133-133.</p>
+      <div class="proj-tags">
+        <span class="badge green">DR1 폴리머</span>
+        <span class="badge green">박막 배향</span>
+        <span class="badge green">한국고분자학회</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-header">
+        <div class="proj-title">LG화학 특허 — 13건</div>
+        <span class="proj-type">특허 · 2001–2008</span>
+      </div>
+      <p class="proj-desc">폴리이미드·금속적층판·감광성 수지 등 소재 및 공정 연구 성과를 특허로 출원 및 등록.<br>국내출원 우선권을 기반으로 PCT 출원 동시 진행.</p>
+      <div style="margin-top: 12px; border-top: 0.5px solid #eee; padding-top: 12px;">
+        <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 0.5px solid #eee;">
+              <th style="text-align: left; padding: 4px 6px 6px 0; color: #aaa; font-weight: 400;">발명의 명칭</th>
+              <th style="text-align: center; padding: 4px 0 6px; color: #aaa; font-weight: 400; white-space: nowrap;">등록일</th>
+              <th style="text-align: center; padding: 4px 0 6px; color: #aaa; font-weight: 400;">상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">금속적층판 및 이의 제조방법</td><td style="text-align: center; color: #888; white-space: nowrap;">2007.09</td><td style="text-align: center;"><span class="badge registered">등록</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">금속적층판 및 이의 제조방법</td><td style="text-align: center; color: #888; white-space: nowrap;">2008.11</td><td style="text-align: center;"><span class="badge registered">등록</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">알칼리 수용액 현상 감광성 수지 조성물 및 드라이 필름</td><td style="text-align: center; color: #888; white-space: nowrap;">2011.05</td><td style="text-align: center;"><span class="badge registered">등록</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">폴리이미드 공중합체 및 그 제조방법</td><td style="text-align: center; color: #888; white-space: nowrap;">2007.07</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">양면 금속 적층판 및 그의 제조방법 (2건)</td><td style="text-align: center; color: #888; white-space: nowrap;">2005.07</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">플렉시블 인쇄 회로용 기판 및 그 제조방법</td><td style="text-align: center; color: #888; white-space: nowrap;">2006.06</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">2층 동장 적층판의 제조방법</td><td style="text-align: center; color: #888; white-space: nowrap;">2006.11</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">금속 적층판 및 그의 제조방법</td><td style="text-align: center; color: #888; white-space: nowrap;">2007.01</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">폴리이미드 공중합체 기반 커버레이 및 제조방법</td><td style="text-align: center; color: #888; white-space: nowrap;">2007.12</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">폴리이미드 제조방법 및 이에 의하여 제조된 폴리이미드</td><td style="text-align: center; color: #888; white-space: nowrap;">2010.06</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+            <tr style="border-bottom: 0.5px solid #f5f5f5;"><td style="padding: 5px 6px 5px 0; color: #444;">폴리아믹산 기반 감광성 수지 조성물 및 드라이 필름</td><td style="text-align: center; color: #888; white-space: nowrap;">2011.01</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+            <tr><td style="padding: 5px 6px 5px 0; color: #444;">저온 경화성 감광성 수지 조성물 및 드라이 필름</td><td style="text-align: center; color: #888; white-space: nowrap;">2011.03</td><td style="text-align: center;"><span class="badge expired">소멸</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2 class="section-title">역량</h2>
+  <div class="skills-wrap">
+    <div class="skills-row">
+      <div class="skill-group">
+        <h3>화학 · 연구</h3>
+        <div class="skill-list">
+          <span class="skill-item">소재 합성 · 분석</span>
+          <span class="skill-item">R&D 기획 · 실험설계</span>
+          <span class="skill-item">특허 명세서 작성</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>AI · 데이터</h3>
+        <div class="skill-list">
+          <span class="skill-item">NLP · 텍스트 분류</span>
+          <span class="skill-item">음성 AI 처리</span>
+          <span class="skill-item">이미지 인식 · 생성</span>
+          <span class="skill-item">특허 데이터 분석 · 시각화</span>
+          <span class="skill-item">Python 기반 데이터 전처리·분석</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>IP · 전략</h3>
+        <div class="skill-list">
+          <span class="skill-item">IPC 분류 분석</span>
+          <span class="skill-item">지식재산권 관리</span>
+          <span class="skill-item">특허 포트폴리오 관리</span>
+        </div>
+      </div>
+    </div>
+    <div class="skills-row two">
+      <div class="skill-group">
+        <h3>툴 · 기술</h3>
+        <div class="skill-list">
+          <span class="skill-item">Python</span>
+          <span class="skill-item">Gephi</span>
+          <span class="skill-item">Arduino · Raspberry Pi</span>
+          <span class="skill-item">기술 커뮤니케이션</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>자격증</h3>
+        <div class="skill-list">
+          <span class="skill-item">3D프린팅 운용기능사</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-block" id="contact">
+  <h2 class="section-title">연락처</h2>
+  <p>새로운 기회나 협업 제안을 환영합니다.<br>아래 채널로 편하게 연락 주세요.</p>
+  <div class="contact-links">
+    <a class="contact-link" href="mailto:4juneko@gmail.com">4juneko@gmail.com</a>
+  </div>
+  <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+    <a class="contact-link" href="https://github.com/4juneko" target="_blank">GitHub</a>
+    <p style="font-size: 13px; color: #888; margin: 0;">NLP · 음성 · 이미지 생성 · 특허 분석 관련 실습 프로젝트 공개</p>
+  </div>
+</section>
+
+</body>
+</html>
